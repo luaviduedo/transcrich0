@@ -36,7 +36,7 @@ export async function getASRPipeline() {
       "automatic-speech-recognition",
       "Xenova/whisper-small",
       {
-        dtype: "fp32",
+        dtype: "q8",
       },
     );
   }
