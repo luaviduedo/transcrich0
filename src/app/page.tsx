@@ -5,7 +5,6 @@ import { FileUploader } from "@/components/file-uploader";
 import { ProgressStatus } from "@/components/progress-status";
 import { TranscriptPanel } from "@/components/transcript-panel";
 import { extractAudioFromMedia } from "@/lib/ffmpeg";
-import { buildSrt, downloadTextFile } from "@/lib/download";
 import { transcribeBlob, type TranscriptResult } from "@/lib/transcribe";
 
 type Status =
@@ -72,18 +71,6 @@ export default function HomePage() {
     }
   }
 
-  function handleDownloadTxt() {
-    if (!transcriptText) return;
-    downloadTextFile("transcricao.txt", transcriptText);
-  }
-
-  function handleDownloadSrt() {
-    if (!transcript?.chunks?.length) return;
-
-    const srt = buildSrt(transcript.chunks);
-    downloadTextFile("transcricao.srt", srt);
-  }
-
   async function handleCopyText() {
     if (!transcriptText) return;
     await navigator.clipboard.writeText(transcriptText);
@@ -145,22 +132,6 @@ export default function HomePage() {
           )}
 
           <div className="flex flex-wrap gap-3">
-            <button
-              onClick={handleDownloadTxt}
-              disabled={!transcriptText}
-              className="rounded-2xl border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm font-medium text-zinc-100 transition enabled:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Baixar TXT
-            </button>
-
-            <button
-              onClick={handleDownloadSrt}
-              disabled={!transcript?.chunks?.length}
-              className="rounded-2xl border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm font-medium text-zinc-100 transition enabled:hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              Baixar SRT
-            </button>
-
             <button
               onClick={handleCopyText}
               disabled={!transcriptText}
